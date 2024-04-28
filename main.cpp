@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <intrin.h>
 
-// The rest of the code you provided
-
 #define THRESHOLD 4.8
 #define MAX_SAND 60
 LARGE_INTEGER start;
