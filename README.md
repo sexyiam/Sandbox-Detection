@@ -1,4 +1,4 @@
-We will be doing some Sandboxie detection based on comparing the execution time of two different instructions, specifically the FYL2XP1 and RDTSC instruction.
+Doing some Sandboxie detection based on comparing the execution time of two different instructions, specifically the FYL2XP1 and RDTSC instruction.
 
 The FYL2XP1 instruction calculates the logarithm base 2 of the number specified in ST(1). In this case, it's a pointless calculation because the result is discarded. The reason for using this instruction is that it has a longer execution time than RDTSC.
 
@@ -26,7 +26,7 @@ We will use inlined_asm using [b]rdtsc[/b] we're reading the Time Stamp Counter 
 To measure the CPU performance, the program will repeat this process 100 times and takes the average execution time.
 We will be using [b]QueryPerformanceCounter[/b] function to measure time accurately.
 So, the code should look like,
-[code]
+```c++
 #define THRESHOLD 4.8
 #define MAX_SAND 60 
 LARGE_INTEGER start;
@@ -68,12 +68,12 @@ for (int j = 0; j < 100; j++) {
 	Sleep(10);
 }
 sum /= 100;
-[/code]
+```
 
 Next, the program calculates a score by dividing the execution time of the FYL2XP1 instruction by the execution time of the RDTSC instruction. If the ratio is above the threshold (4.8), the program considers it likely to be running in a sandbox. So, if number of times it detected a sandbox (sand) is greater than a maximum threshold (MAX_SAND), it concludes that it's running in a sandbox.
 
 The final checking part should be like this,
-[code]
+```c++
 printf("Avg. score: %f\n", sum);
 printf("%d%% likely to be physical\n", phys);
 if (sand > MAX_SAND) {
@@ -84,7 +84,7 @@ else {
 	printf("Not a Potential VM\n");
 	system("pause");
 }
-[/code]
+```
 
 On real Machine :
 [img]https://i.imgur.com/ljZKFN4.png[/img]
