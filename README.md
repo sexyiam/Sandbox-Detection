@@ -88,6 +88,7 @@ else {
 
 On real Machine :
 [img]https://i.imgur.com/ljZKFN4.png[/img]
+![On real Machine](https://i.imgur.com/ljZKFN4.png)
 
 On Tria.ge : 
 [img]https://i.imgur.com/eKUdjBL.png[/img]
