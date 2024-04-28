@@ -21,10 +21,10 @@ The RDTSC instruction reads the Time Stamp Counter (TSC), a 64-bit register that
         pop eax 
     }; 
 ```
-We will use inlined_asm using [b]rdtsc[/b] we're reading the Time Stamp Counter and passing into EDX:EAX, using [b]shl edx, 32[/b] wiill shift the high 32 bits of the TSC (in EDX) 32 positions to the left, the others should be self-explanatory we're pushing the value of EDX,EAX etc... to the stack, [b]CPUID[/b] for fetching the CPU Info, [b]pop edx,ecx[/b] etc... for pops the value from stack.
+We will use inlined_asm using **rdtsc** we're reading the Time Stamp Counter and passing into EDX:EAX, using **shl edx, 32** wiill shift the high 32 bits of the TSC (in EDX) 32 positions to the left, the others should be self-explanatory we're pushing the value of EDX,EAX etc... to the stack, **CPUID** for fetching the CPU Info, **pop edx,ecx** etc... for pops the value from stack.
 
 To measure the CPU performance, the program will repeat this process 100 times and takes the average execution time.
-We will be using [b]QueryPerformanceCounter[/b] function to measure time accurately.
+We will be using **QueryPerformanceCounter** function to measure time accurately.
 So, the code should look like,
 ```c++
 #define THRESHOLD 4.8
@@ -92,4 +92,4 @@ On real Machine :
 On Tria.ge : 
 [img]https://i.imgur.com/eKUdjBL.png[/img]
 
-[b]Note: This method is not foolproof. Anyone can modify the CPU microcode to slow down the FYL2XP1 instruction while keeping the RDTSC instruction unchanged, thereby giving a false negative.[/b]
+**Note: This method is not foolproof. Anyone can modify the CPU microcode to slow down the FYL2XP1 instruction while keeping the RDTSC instruction unchanged, thereby giving a false negative.**
