@@ -2,77 +2,58 @@
 #include <stdio.h>
 #include <intrin.h>
 
+// The rest of the code you provided
 
-const int THRESHOLD = 48;
-const int MAX_SAND = 60;
-const int ITERATIONS = 100;
-const int INNER_ITERATIONS = 100;
-
-
-double measureFYL2XP1Time();
-double measureCPUTime();
-void check();
-
-double measureFYL2XP1Time() {
-    LARGE_INTEGER start, end;
-    QueryPerformanceCounter(&start);
-    for (int i = 0; i < INNER_ITERATIONS; i++)
-        __asm FYL2XP1;
-    QueryPerformanceCounter(&end);
-    return static_cast<double>(end.QuadPart - start.QuadPart) / INNER_ITERATIONS;
-}
-
-double measureCPUTime() {
-    LARGE_INTEGER start, end;
-    double time;
-    QueryPerformanceCounter(&start);
-    _mm_lfence(); 
-    for (int i = 0; i < INNER_ITERATIONS; i++) {
-        __asm {
+#define THRESHOLD 4.8
+#define MAX_SAND 60
+LARGE_INTEGER start;
+LARGE_INTEGER end;
+int phys = 0;
+int sand = 0;
+double sum = 0;
+void check() {
+    for (int j = 0; j < 100; j++) {
+        QueryPerformanceCounter(&start);
+        for (int i = 0; i < 100; i++)
+            __asm FYL2XP1;
+        QueryPerformanceCounter(&end);
+        double fy = static_cast<double>(end.QuadPart - start.QuadPart);
+        QueryPerformanceCounter(&start);
+        for (int i = 0; i < 100; i++)
+            __asm {
             rdtsc
             shl edx, 32
             or eax, edx
+            push eax
+            push ebx
+            push ecx
+            push edx
+            xor eax, eax
+            CPUID
+            pop edx
+            pop ecx
+            pop ebx
+            pop eax
         };
-        _mm_lfence(); 
-    }
-    QueryPerformanceCounter(&end);
-    time = static_cast<double>(end.QuadPart - start.QuadPart) / INNER_ITERATIONS;
-    return time;
-}
-
-void check() {
-    int phys = 0;
-    int sand = 0;
-    double sum = 0.0;
-
-    for (int j = 0; j < ITERATIONS; j++) {
-        double fyTime = measureFYL2XP1Time();
-        double cpuTime = measureCPUTime();
-        double ratio = cpuTime / fyTime;
-
+        QueryPerformanceCounter(&end);
+        double cpu = static_cast<double>(end.QuadPart - start.QuadPart);
+        double ratio = cpu / fy;
         if (ratio > THRESHOLD)
             sand++;
         else
             phys++;
-
         sum += ratio;
         Sleep(10);
+
     }
-
-    sum /= ITERATIONS;
-
+    sum /= 100;
     if (sand > MAX_SAND) {
-        printf("Potential Sandbox or Virtual Machine Detected\n");
+        printf("Sandbox...\n");
+        system("pause");
     }
     else {
         printf("Not a Potential VM\n");
+        system("pause");
     }
-
-    printf("Press any key to continue . . .\n");
-    getchar();
 }
 
-int main() {
-    check();
-    return 0;
-}
