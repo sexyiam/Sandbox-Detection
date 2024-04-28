@@ -86,11 +86,9 @@ else {
 }
 ```
 
-On real Machine :
-[img]https://i.imgur.com/ljZKFN4.png[/img]
+
 ![On real Machine](https://i.imgur.com/ljZKFN4.png)
 
-On Tria.ge : 
-[img]https://i.imgur.com/eKUdjBL.png[/img]
+![On Tria.ge](https://i.imgur.com/eKUdjBL.png)
 
 **Note: This method is not foolproof. Anyone can modify the CPU microcode to slow down the FYL2XP1 instruction while keeping the RDTSC instruction unchanged, thereby giving a false negative.**
