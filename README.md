@@ -4,7 +4,7 @@ The FYL2XP1 instruction calculates the logarithm base 2 of the number specified 
 
 The RDTSC instruction reads the Time Stamp Counter (TSC), a 64-bit register that increments at each clock cycle.
 
-[code]
+```asm
  __asm { 
         rdtsc 
         shl edx, 32 
@@ -20,7 +20,7 @@ The RDTSC instruction reads the Time Stamp Counter (TSC), a 64-bit register that
         pop ebx 
         pop eax 
     }; 
-[/code]
+```
 We will use inlined_asm using [b]rdtsc[/b] we're reading the Time Stamp Counter and passing into EDX:EAX, using [b]shl edx, 32[/b] wiill shift the high 32 bits of the TSC (in EDX) 32 positions to the left, the others should be self-explanatory we're pushing the value of EDX,EAX etc... to the stack, [b]CPUID[/b] for fetching the CPU Info, [b]pop edx,ecx[/b] etc... for pops the value from stack.
 
 To measure the CPU performance, the program will repeat this process 100 times and takes the average execution time.
